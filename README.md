@@ -13,7 +13,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 install git
 
 ```console
-sudo apt install git --no-install-dependencies
+sudo apt install git
 ```
 
 clone this repository
