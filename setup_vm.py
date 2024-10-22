@@ -147,6 +147,7 @@ def main() -> int:
             '/etc/apt/keyrings',
         ),
     )
+    _sudo_apt_install('cmake')
     _sudo_apt_install('mono-complete')
     _sudo_apt_install('golang')
     _sudo_apt_install('nodejs')
@@ -205,7 +206,6 @@ def main() -> int:
     _sudo_apt_install('bzip2')
     _sudo_apt_install('curl')
     _sudo_apt_install('build-essential')
-    _sudo_apt_install('cmake')
 
     # setup virtualenv
     _execute_cmd(
