@@ -10,7 +10,6 @@ from typing import NamedTuple
 import yaml
 
 
-SUDO_PASSWORD = b'qwe\n'
 USER_NAME = pwd.getpwuid(os.getuid()).pw_name
 USER_HOME = f'/home/{USER_NAME}'
 
