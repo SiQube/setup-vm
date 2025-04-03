@@ -71,6 +71,17 @@ def _clone_github_repo(repo: Repo) -> None:
     subprocess.run(args=repo.get_clone_cmd)
 
 
+def _setup_git_repos() -> None:
+    _print_line('setting up git repos')
+    os.makedirs(os.path.join(USER_HOME, 'lab'), exist_ok=True)
+    os.makedirs(os.path.join(USER_HOME, 'lab', 'siqube'), exist_ok=True)
+    _print_line('setting up sq repos')
+    _clone_github_repo(Repo('siqube', 'scratch', f'{USER_HOME}/lab/siqube/scratch'))
+    _print_line('setting up aeye-lab repos')
+    os.makedirs(os.path.join(USER_HOME, 'lab', 'aeye-lab'), exist_ok=True)
+    _clone_github_repo(Repo('aeye-lab', 'pymovements', f'{USER_HOME}/lab/aeye-lab/pymovements/'))
+
+
 def _move_file(origin: str, destination: str) -> None:
     _print_line(f'moving from {origin} to {destination}')
     shutil.move(origin, destination)
@@ -250,6 +261,9 @@ def main() -> int:
     if args.install_guest_edition:
         # install guess edition
         _sudo_bash_cmd(f'/media/{USER_NAME}/VBox_GAs_7.0.12/autorun.sh')
+
+    # setup my repos
+    _setup_git_repos()
 
     return 0
 
