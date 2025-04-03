@@ -135,7 +135,7 @@ def main() -> int:
     _execute_cmd(('sudo', 'apt', 'update', '-y'))
 
     # setup git
-    _execute_cmd(('git', 'config', '--global', 'user.name', '"SiQube"'))
+    _execute_cmd(('git', 'config', '--global', 'user.name', '"siqube"'))
     _execute_cmd(
         (
             'git',
