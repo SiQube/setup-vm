@@ -119,6 +119,7 @@ def main() -> int:
     )
     parser.add_argument('--testing', action='store_true')
     parser.add_argument('--clean-up', action='store_true')
+    parser.add_argument('--skip-vim', action='store_true')
     args = parser.parse_args()
 
     if args.clean_up:
@@ -145,66 +146,67 @@ def main() -> int:
         ),
     )
 
-    # get vim
-    _sudo_apt_install('vim')
-    _clone_github_repo(Repo('siqube', 'scratch'))
-    _move_file('scratch/.vimrc_cl_install', USER_HOME)
-    # setup youcompleteme
-    _execute_cmd(
-        (
-            'mkdir',
-            '-p',
-            '/etc/apt/keyrings',
-        ),
-    )
-    _sudo_apt_install('cmake')
-    _sudo_apt_install('mono-complete')
-    _sudo_apt_install('golang')
-    _sudo_apt_install('nodejs')
-    _sudo_apt_install('openjdk-17-jdk')
-    _sudo_apt_install('openjdk-17-jre')
-    _sudo_apt_install('npm')
-    _execute_cmd(('sudo', 'mkdir', '-p', f'{USER_HOME}/.vim/bundle'))
-    _execute_cmd(('sudo', 'chmod', '777', f'{USER_HOME}/.vim'))
-    _execute_cmd(('sudo', 'chmod', '777', f'{USER_HOME}/.vim/bundle'))
-    _clone_github_repo(
-        Repo(
-            'ycm-core',
-            'YouCompleteMe',
+    if not args.skip_vim:
+        # get vim
+        _sudo_apt_install('vim')
+        _clone_github_repo(Repo('siqube', 'scratch'))
+        _move_file('scratch/.vimrc_cl_install', USER_HOME)
+        # setup youcompleteme
+        _execute_cmd(
+            (
+                'mkdir',
+                '-p',
+                '/etc/apt/keyrings',
+            ),
+        )
+        _sudo_apt_install('cmake')
+        _sudo_apt_install('mono-complete')
+        _sudo_apt_install('golang')
+        _sudo_apt_install('nodejs')
+        _sudo_apt_install('openjdk-17-jdk')
+        _sudo_apt_install('openjdk-17-jre')
+        _sudo_apt_install('npm')
+        _execute_cmd(('sudo', 'mkdir', '-p', f'{USER_HOME}/.vim/bundle'))
+        _execute_cmd(('sudo', 'chmod', '777', f'{USER_HOME}/.vim'))
+        _execute_cmd(('sudo', 'chmod', '777', f'{USER_HOME}/.vim/bundle'))
+        _clone_github_repo(
+            Repo(
+                'ycm-core',
+                'YouCompleteMe',
+                f'{USER_HOME}/.vim/bundle/YouCompleteMe',
+            ),
+        )
+        _execute_cmd(
+            (
+                'git',
+                'submodule',
+                'update',
+                '--init',
+                '--recursive',
+            ),
+            cwd=f'{USER_HOME}/.vim/bundle/YouCompleteMe',
+        )
+        _sudo_apt_install('python3-dev')
+        _run_python(
+            ('install.py', '--all'),
             f'{USER_HOME}/.vim/bundle/YouCompleteMe',
-        ),
-    )
-    _execute_cmd(
-        (
-            'git',
-            'submodule',
-            'update',
-            '--init',
-            '--recursive',
-        ),
-        cwd=f'{USER_HOME}/.vim/bundle/YouCompleteMe',
-    )
-    _sudo_apt_install('python3-dev')
-    _run_python(
-        ('install.py', '--all'),
-        f'{USER_HOME}/.vim/bundle/YouCompleteMe',
-    )
+        )
 
-    _clone_github_repo(
-        Repo('VundleVim', 'Vundle.vim', f'{USER_HOME}/.vim/bundle/Vundle.vim'),
-    )
-    _execute_cmd(
-        (
-            'vim',
-            '-u',
-            f'{USER_HOME}/.vimrc_cl_install',
-            '+PluginInstall',
-            '+qall',
-        ),
-    )
-    _move_file('scratch/.vimrc', USER_HOME)
-    _execute_cmd(('vim', f'{USER_HOME}/.vimrc', '+PluginInstall', '+qall'))
-    _delete_directory('scratch')
+        _clone_github_repo(
+            Repo('VundleVim', 'Vundle.vim', f'{USER_HOME}/.vim/bundle/Vundle.vim'),
+        )
+        _execute_cmd(
+            (
+                'vim',
+                '-u',
+                f'{USER_HOME}/.vimrc_cl_install',
+                '+PluginInstall',
+                '+qall',
+            ),
+        )
+        _move_file('scratch/.vimrc', USER_HOME)
+        _execute_cmd(('vim', f'{USER_HOME}/.vimrc', '+PluginInstall', '+qall'))
+        _delete_directory('scratch')
     if args.testing:
         _execute_cmd(('sudo', 'rm', '-rf', f'{USER_HOME}/.vim'))
         _delete_file(f'{USER_HOME}/.vimrc')
