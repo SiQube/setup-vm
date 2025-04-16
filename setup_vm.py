@@ -59,10 +59,9 @@ class Repo(NamedTuple):
 
     @property
     def _get_print_line(self) -> str:
+        print_line = f'cloning repo {self}'
         if self.destination:
-            print_line = f'cloning repo {self} to {self.destination}'
-        else:
-            print_line = f'cloning repo {self}'
+            print_line += f' to {self.destination}'
         return print_line
 
 
@@ -75,11 +74,28 @@ def _setup_git_repos() -> None:
     _print_line('setting up git repos')
     os.makedirs(os.path.join(USER_HOME, 'lab'), exist_ok=True)
     os.makedirs(os.path.join(USER_HOME, 'lab', 'siqube'), exist_ok=True)
+
     _print_line('setting up sq repos')
-    _clone_github_repo(Repo('siqube', 'scratch', f'{USER_HOME}/lab/siqube/scratch'))
+    _clone_github_repo(
+        Repo(
+            'siqube',
+            'scratch',
+            f'{USER_HOME}/lab/siqube/scratch',
+        ),
+    )
+
     _print_line('setting up aeye-lab repos')
     os.makedirs(os.path.join(USER_HOME, 'lab', 'aeye-lab'), exist_ok=True)
-    _clone_github_repo(Repo('aeye-lab', 'pymovements', f'{USER_HOME}/lab/aeye-lab/pymovements/'))
+    _clone_github_repo(
+        Repo(
+            'aeye-lab',
+            'pymovements',
+            f'{USER_HOME}/lab/aeye-lab/pymovements/',
+        ),
+    )
+
+    _print_line('setting up dili-lab repos')
+    os.makedirs(os.path.join(USER_HOME, 'lab', 'dili-lab'), exist_ok=True)
 
 
 def _move_file(origin: str, destination: str) -> None:
@@ -193,7 +209,11 @@ def main() -> int:
         )
 
         _clone_github_repo(
-            Repo('VundleVim', 'Vundle.vim', f'{USER_HOME}/.vim/bundle/Vundle.vim'),
+            Repo(
+                'VundleVim',
+                'Vundle.vim',
+                f'{USER_HOME}/.vim/bundle/Vundle.vim',
+            ),
         )
         _execute_cmd(
             (
@@ -269,6 +289,17 @@ def main() -> int:
 
     # setup my repos
     _setup_git_repos()
+
+    # change git editor to vim
+    _execute_cmd(
+        (
+            'git',
+            'config',
+            '--global',
+            'core.editor',
+            'vim',
+        ),
+    )
 
     return 0
 
