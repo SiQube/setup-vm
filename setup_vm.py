@@ -259,6 +259,9 @@ def main() -> int:
         python_versions = yaml.safe_load(yaml_file)
     for python_version in python_versions:
         _sudo_apt_install(f'python{python_version}')
+    _sudo_apt_install('xclip')
+    _execute_cmd(('sudo', 'apt-get', 'install', 'xclip', '-y'))
+    _execute_cmd("alias pbcopy='xclip -selection clipboard'")
 
     if args.install_guest_edition:
         # install guess edition
