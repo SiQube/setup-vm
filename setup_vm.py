@@ -205,7 +205,15 @@ def main() -> int:
             ),
             cwd=f'{USER_HOME}/.vim/bundle/YouCompleteMe',
         )
+        # install python versions
         _sudo_apt_install('python3-dev')
+        _sudo_apt_install('software-properties-common')
+        _execute_cmd(('sudo', 'add-apt-repository', 'ppa:deadsnakes/ppa', '-y'))
+        with open('python_versions.yaml') as yaml_file:
+            python_versions = yaml.safe_load(yaml_file)
+        for python_version in python_versions:
+            _sudo_apt_install(f'python{python_version}')
+            _sudo_apt_install(f'python{python_version}-dev')
         _run_python(
             ('install.py', '--all'),
             f'{USER_HOME}/.vim/bundle/YouCompleteMe',
@@ -276,13 +284,7 @@ def main() -> int:
             ),
         )
 
-    # install python versions
-    _sudo_apt_install('software-properties-common')
-    _execute_cmd(('sudo', 'add-apt-repository', 'ppa:deadsnakes/ppa', '-y'))
-    with open('python_versions.yaml') as yaml_file:
-        python_versions = yaml.safe_load(yaml_file)
-    for python_version in python_versions:
-        _sudo_apt_install(f'python{python_version}')
+    # alias pbcopy
     _sudo_apt_install('xclip')
     _execute_cmd(('sudo', 'apt-get', 'install', 'xclip', '-y'))
     _execute_cmd("alias pbcopy='xclip -selection clipboard'")
