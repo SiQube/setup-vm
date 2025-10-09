@@ -137,6 +137,7 @@ def main() -> int:
     parser.add_argument('--testing', action='store_true')
     parser.add_argument('--clean-up', action='store_true')
     parser.add_argument('--skip-vim', action='store_true')
+    parser.add_argument('--skip-github-setup', action='store_true')
     args = parser.parse_args()
 
     if args.clean_up:
@@ -289,7 +290,8 @@ def main() -> int:
         _sudo_bash_cmd(f'/media/{USER_NAME}/VBox_GAs_7.0.12/autorun.sh')
 
     # setup my repos
-    _setup_git_repos()
+    if not args.skip_github_setup:
+        _setup_git_repos()
 
     # change git editor to vim
     _execute_cmd(
