@@ -152,7 +152,7 @@ def main() -> int:
     _execute_cmd(('sudo', 'apt', 'upgrade', '-y'))
     _execute_cmd(('sudo', 'apt', 'update', '-y'))
 
-    # setup git
+    # setup git options
     _execute_cmd(('git', 'config', '--global', 'user.name', '"siqube"'))
     _execute_cmd(
         (
@@ -163,6 +163,7 @@ def main() -> int:
             '"reich.davidr@gmail.com"',
         ),
     )
+    _execute_cmd(('git', 'config', '--global', 'core.editor', '"vim"'))
 
     if not args.skip_vim:
         # get vim
@@ -229,6 +230,7 @@ def main() -> int:
         _move_file('scratch/.vimrc', USER_HOME)
         _execute_cmd(('vim', f'{USER_HOME}/.vimrc', '+PluginInstall', '+qall'))
         _delete_directory('scratch')
+
     if args.testing:
         _execute_cmd(('sudo', 'rm', '-rf', f'{USER_HOME}/.vim'))
         _delete_file(f'{USER_HOME}/.vimrc')
