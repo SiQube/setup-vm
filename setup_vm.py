@@ -93,6 +93,7 @@ def _setup_git_repos() -> None:
             f'{USER_HOME}/lab/aeye-lab/pymovements/',
         ),
     )
+    _clone_github_repo(Repo('siqube', 'runbooks-pymovements', f'{USER_HOME}/lab/aeye-lab/pymovements/'))
 
     _print_line('setting up dili-lab repos')
     os.makedirs(os.path.join(USER_HOME, 'lab', 'dili-lab'), exist_ok=True)
