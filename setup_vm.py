@@ -75,7 +75,7 @@ def _setup_git_repos() -> None:
     os.makedirs(os.path.join(USER_HOME, 'lab'), exist_ok=True)
     os.makedirs(os.path.join(USER_HOME, 'lab', 'siqube'), exist_ok=True)
 
-    _print_line('setting up sq repos')
+    _print_line('setting up siqube repos')
     _clone_github_repo(
         Repo(
             'siqube',
@@ -88,15 +88,31 @@ def _setup_git_repos() -> None:
     os.makedirs(os.path.join(USER_HOME, 'lab', 'aeye-lab'), exist_ok=True)
     _clone_github_repo(
         Repo(
-            'aeye-lab',
+            'pymovements',
             'pymovements',
             f'{USER_HOME}/lab/aeye-lab/pymovements/',
         ),
     )
-    _clone_github_repo(Repo('siqube', 'runbooks-pymovements', f'{USER_HOME}/lab/aeye-lab/pymovements/'))
+    _clone_github_repo(
+        Repo(
+            'siqube',
+            'runbooks-pymovements',
+            f'{USER_HOME}/lab/aeye-lab/runbooks-pymovements/',
+        ),
+    )
 
     _print_line('setting up dili-lab repos')
     os.makedirs(os.path.join(USER_HOME, 'lab', 'dili-lab'), exist_ok=True)
+
+    _print_line('setting up eyebench repos')
+    os.makedirs(os.path.join(USER_HOME, 'lab', 'eyebench'), exist_ok=True)
+    _clone_github_repo(
+        Repo(
+            'eyebench',
+            'eyegenbench',
+            f'{USER_HOME}/lab/eyebench/eyegenbench/',
+        ),
+    )
 
 
 def _move_file(origin: str, destination: str) -> None:
@@ -208,7 +224,14 @@ def main() -> int:
         # install python versions
         _sudo_apt_install('python3-dev')
         _sudo_apt_install('software-properties-common')
-        _execute_cmd(('sudo', 'add-apt-repository', 'ppa:deadsnakes/ppa', '-y'))
+        _execute_cmd(
+            (
+                'sudo',
+                'add-apt-repository',
+                'ppa:deadsnakes/ppa',
+                '-y',
+            ),
+        )
         with open('python_versions.yaml') as yaml_file:
             python_versions = yaml.safe_load(yaml_file)
         for python_version in python_versions:
