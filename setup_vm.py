@@ -307,11 +307,6 @@ def main() -> int:
             ),
         )
 
-    # alias pbcopy
-    _sudo_apt_install('xclip')
-    _execute_cmd(('sudo', 'apt-get', 'install', 'xclip', '-y'))
-    _execute_cmd("alias pbcopy='xclip -selection clipboard'")
-
     if args.install_guest_edition:
         # install guess edition
         _sudo_bash_cmd(f'/media/{USER_NAME}/VBox_GAs_7.0.12/autorun.sh')
